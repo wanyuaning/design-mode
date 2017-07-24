@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>adapter</title>
+</head>
+<body>
+<script>
+
+    function adapterDataFromServer(res) {
+        var data = {
+            id: res.pid,
+            name: res.title,
+            price: res.price
+        };
+        return data;
+    }
+
+</script>
+<script>
+    var data = {
+        id: '10000',
+        name: 'Macbook pro',
+        price: 15000
+    };
+
+    var dataFromServer = {
+        pid: '10983745',
+        title: 'Samsung 9200-bin09',
+        price: 6500
+    };
+    data = adapterDataFromServer(dataFromServer);
+
+    console.log(data.id);
+    console.log(data.name);
+    console.log(data.price);
+
+
+
+
+</script>
+
+</body>
+</html>
