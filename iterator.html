@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>iterator</title>
+</head>
+<body>
+设计模式之迭代器
+<script>
+
+    var iterator = function (obj) {
+        var length = obj.length;
+        var index = 0;
+        return {
+            hasNext: function () {
+                return index < length;
+            },
+            next: function () {
+                return obj[index + 1]
+            },
+            reset: function () {
+                index = 0;
+            }
+        }
+    }
+
+</script>
+<script>
+
+    var arr = ['abc', 120, {name: 'wanyuaning', email: 'abc@163.com'}, '王远清'];
+
+
+    var test = iterator(arr);
+    console.log(test.hasNext());
+    console.log(test.next());
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
