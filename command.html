@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>command</title>
+</head>
+<body>
+
+<script>
+    var lian = {
+        lianzhang: function (mingling) {
+            lian[mingling.type](mingling.num);
+        },
+        bubing: function (num) {
+            console.log(num + '人开始战斗');
+        },
+        paobing: function (num) {
+            console.log(num + '门炮投入战场')
+        }
+    };
+
+    // 总司令发令
+    lian.lianzhang({
+        type: 'paobing',
+        num: 100
+    });
+    lian.lianzhang({
+        type: 'bubing',
+        num: 3000
+    });
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+
+
+</body>
+</html>
