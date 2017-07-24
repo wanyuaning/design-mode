@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>obligation</title>
+</head>
+<body>
+
+<script>
+
+    function levelA(levelB) { if (levelB) this.levelB = levelB }
+    function levelB(levelC) { if (levelC) this.levelC = levelC }
+    function levelC(levelD) { if (levelD) this.levelD = levelD }
+    function levelD() {  }
+
+
+    levelA.prototype.run = function (task, consignor) {
+        console.log('levelA 接收到来自 ' + consignor +' 的任务:' + task);
+        console.log('levelA 把任务指派给了 levelB');
+        this.levelB.run(task, 'levelA');
+    };
+    levelB.prototype.run = function (task, consignor) {
+        console.log('levelB 接收到来自 ' + consignor +' 的任务');
+        console.log('levelB 把任务指派给了 levelC');
+        this.levelC.run(task, 'levelB');
+    };
+    levelC.prototype.run = function (task, consignor) {
+        console.log('levelC 接收到来自 ' + consignor +' 的任务');
+        console.log('levelC 把任务指派给了 levelD');
+        this.levelD.run(task, 'levelC');
+    };
+    levelD.prototype.run = function (task, consignor) {
+        console.log('levelD 接收到来自 ' + consignor +' 的任务，指派完成！');
+        console.log('levelD 执行任务...');
+        console.log('levelD 完成了：' + task + '！');
+    };
+
+    var work = new levelA(new levelB(new levelC(new levelD())));
+    work.run('架构微信小程序平台', 'wanyuaning');
+
+
+</script>
+
+
+</body>
+</html>
