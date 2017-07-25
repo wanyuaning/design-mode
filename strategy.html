@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>strategy pattern</title>
+</head>
+<body>
+
+<div style="position: relative;border: 1px solid #ff0000; width: 560px;min-height: 30px">
+    <div style="position:absolute;background:rgba(0,0,255,.3);width: 60px;line-height: 30px;" id="div">我是 div</div>
+</div>
+<div>
+    <label><input type="radio" name="tween" value="linear" checked="checked">linear</label>
+    <label><input type="radio" name="tween" value="easeIn">easeIn</label>
+    <label><input type="radio" name="tween" value="strongEaseIn">strongEaseIn</label>
+    <label><input type="radio" name="tween" value="strongEaseOut">strongEaseOut</label>
+    <label><input type="radio" name="tween" value="sineaseIn">sineaseIn</label>
+    <label><input type="radio" name="tween" value="sineaseOut">sineaseOut</label><br/>
+    <input type="button" id="btnRun" value="run">
+</div>
+
+<script>
+    /*
+     * 缓动算法: 接收4个参数，分别表示： 动画已消失的时间， 小球原始位置， 小球目标位置， 动画持续的总时间
+     */
+    var tween = {
+        linear: function (t, b, c, d) {
+            return c * t / d + b;
+        },
+        easeIn: function (t, b, c, d) {
+            return c * ( t /= d ) * t + b;
+        },
+        strongEaseIn: function (t, b, c, d) {
+            return c * ( t /= d ) * t * t * t * t + b;
+        },
+        strongEaseOut: function (t, b, c, d) {
+            return c * ( ( t = t / d - 1 ) * t * t * t * t + 1 ) + b;
+        },
+        sineaseIn: function (t, b, c, d) {
+            return c * ( t /= d ) * t * t + b;
+        },
+        sineaseOut: function (t, b, c, d) {
+            return c * ( ( t = t / d - 1 ) * t * t + 1 ) + b;
+        }
+    };
+</script>
+
+<script>
+    /*
+     * Animate 的构造函数接收一个参数：即将运动起来的 dom 节点。
+     */
+    var Animate = function (dom) {
+        this.dom = dom; // 进行运动的 dom 节点
+        this.startTime = 0; // 动画开始时间
+        this.startPos = 0; // 动画开始时， dom 节点的位置，即 dom 的初始位置
+        this.endPos = 0; //
+        this.propertyName = null; // dom 节点需要被改变的 css 属性名
+        this.easing = null; // 缓动算法
+        this.duration = null; // 动画持续时间
+    };
+    /*
+     * 负责启动运动动画
+     */
+    Animate.prototype.start = function (propertyName, endPos, duration, easing) {
+        this.startTime = +new Date; // 启动动画的时间
+        this.startPos = this.dom.getBoundingClientRect()[propertyName]; // dom 节点的初始位置
+        this.propertyName = propertyName; // dom 节点需要被改变的 CSS 属性名
+        this.endPos = endPos; // dom 节点的目标位置
+        this.duration = duration; // 动画的持续时间
+        this.easing = tween[easing]; // 缓动算法
+
+        // 启动动画定时器
+        var self = this;
+        var timeId = setInterval(function () {
+            if (self.step() === false) {
+                clearInterval(timeId);
+            }
+        }, 20);
+    };
+    /*
+     * step 表示节点运动的每一帧要做的事情。 负责计算节点的当前位置和调整更新 CSS 属性值
+     */
+    Animate.prototype.step = function(){
+        var t = +new Date; // 取得当前时间
+        if( t >= this.startTime + this.duration){ // 如果动画结束
+            this.update( this.endPos ); // 更新节点的 CSS 属性
+            return false;
+        }
+        var pos = this.easing( t - this.startTime, this.startPos, this.endPos - this.startPos, this.duration);
+        // pos 为节点当前位置
+        this.update( pos ); // 更新节点的 CSS 属性
+    };
+    /*
+     * 负责更新节点 CSS 属性值
+     */
+    Animate.prototype.update = function (pos) {
+        this.dom.style[this.propertyName] = pos + "px";
+    };
+    Animate.prototype.reset = function(){
+        // 重置为 0
+        this.dom.style[this.propertyName] = "0px";
+    };
+</script>
+<script>
+    /*
+     * 创建要运动的节点
+     */
+    var div = document.getElementById("div");
+    var animate = new Animate(div);
+    // 设置运行事件
+    var btnRun = document.getElementById("btnRun");
+    var radios = document.getElementsByName("tween"); // 获取单选框
+    btnRun.onclick = function(){
+        for(var i= 0,lengh=radios.length;i<lengh;i++){
+            // 查找被选中要执行的算法策略
+            if(radios[i].checked){
+                animate.reset(); // 重置节点运动属性
+                // 设置动画的基本属性
+                animate.start( "left", 500, 1000, radios[i].value);
+                break;
+            }
+        }
+    };
+</script>
+
+
+
+</body>
+</html>
