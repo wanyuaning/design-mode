@@ -1,0 +1,65 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>proxy</title>
+</head>
+<body>
+设计模式之代理模式
+<script charset="utf-8">
+
+    function buyer(option) {
+        var name = option;
+        console.log(name + '有买房需求');
+        this.buy = function () {
+            console.log(name + '买房付款20万');
+            return {name: name, do:'20万'};
+        }
+    }
+
+    function celler(option) {
+        var name = option;
+        console.log(name + '有房源出售');
+        this.cell = function (buyer) {
+            console.log(name + '收到' + buyer.name + buyer.do + ', 房屋交给' + buyer.name );
+            return true;
+        }
+    }
+
+    function proxy() {
+        var buyer_xiaoming = new buyer('小明');
+        var celler_leijun = new celler('雷军');
+        this.make = function () {
+            var res = celler_leijun.cell(buyer_xiaoming.buy());
+            if (res) console.log('交易成功！')
+        }
+    }
+
+
+
+    (new proxy).make();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+
+
+</body>
+</html>
