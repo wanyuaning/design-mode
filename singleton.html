@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>singleton pattern</title>
+</head>
+<body>
+设计模式之单例模式
+singleton pattern
+
+<script>
+
+    /**
+     * 1 最简单的对象字面量的方法
+     * var mySingleton1 = {
+            a: "something",
+            b: function () {}
+        };
+     *
+     * 2 需求添加私有属性和方法
+     * var mySingleton2 = function () {
+
+            这里声明私有变量和方法
+            var a = 'private';
+            function b() { console.log(privateVariable) }
+
+            公有变量和方法（可以访问私有变量和方法）
+            return {
+                pa: 'public',
+                pb: function () { b() }
+            };
+
+        };
+     *
+     *
+     * 3 只有在使用的时候才初始化
+     * var mySingleton3 = (function () {
+            var instantiated;
+            function init() {
+                这里定义单例代码
+                return {
+                    publicMethod: function () {
+                        console.log('hello world');
+                    },
+                    publicProperty: 'test'
+                };
+            }
+
+            return {
+                getInstance: function () {
+                    if (!instantiated) {
+                        instantiated = init();
+                    }
+                    return instantiated;
+                }
+            };
+        })();
+        调用公有的方法来获取实例:
+        mySingleton3.getInstance().publicMethod();
+     *
+     *
+     */
+
+
+    var SingletonTester = (function () {
+
+        //参数：传递给单例的一个参数集合
+        function Singleton(args) {
+
+            //设置args变量为接收的参数或者为空（如果没有提供的话）
+            var args = args || {};
+            //设置name参数
+            this.name = 'SingletonTester';
+            //设置pointX的值
+            this.pointX = args.pointX || 6; //从接收的参数里获取，或者设置为默认值
+            //设置pointY的值
+            this.pointY = args.pointY || 10;
+
+        }
+
+        //实例容器
+        var instance;
+
+        var _static = {
+            name: 'SingletonTester',
+
+            //获取实例的方法
+            //返回Singleton的实例
+            getInstance: function (args) {
+                if (instance === undefined) {
+                    instance = new Singleton(args);
+                }
+                return instance;
+            }
+        };
+        return _static;
+    })();
+
+    var singletonTest = SingletonTester.getInstance({ pointX: 5 });
+    console.log(singletonTest.pointX); // 输出 5
+
+
+
+
+
+
+
+
+
+</script>
+
+</body>
+</html>
