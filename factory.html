@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>factory pattern</title>
+</head>
+<body>
+<script>
+    function extend(subclass, superclass){
+        var f= function(){};
+        f.prototype = superclass.prototype;//f.prototype.constructor = superclass
+        subclass.prototype = new f();//这里调用的实际上是superclass()，这样subclass.prototype.construcor = superclass
+        subclass.prototype.constructor = subclass;//将subclass的构造函数改写为正常的自身的构造函数
+    }
+
+
+    function Bmw(){}
+    function Benz(f){ console.log(f+'奔驰')}
+    function Audi(f){ console.log(f+'奥迪')}
+
+
+    //创建一个通用的工厂
+    var factory = function () {};
+    factory.prototype = {
+        sellcar: function (brand) {
+            var car = this.createCar(brand);
+            return car;
+        },
+        createCar: function () {
+            throw new Error('unsupported operation on an abstract class');
+        }
+    };
+
+    //北汽集团
+    var BJfactory = function () {};
+    //继承自factory，请参考http://blog.sina.com.cn/s/blog_550ffb0b0100nt80.html(javascript面向对象之二继承)
+    extend(BJfactory, factory);
+    //重写汽车方法
+    BJfactory.prototype.createCar = function (brand) {alert(1);
+        var car;
+        switch (brand) {
+            case 'bmw':
+                car = new Bmw();
+                break;
+            case 'benz':
+                car = new Benz('北京');
+                break;
+            case 'audi':
+                car = new Audi('北京');
+                break;
+            default:
+                car = new Bmw();
+        }
+        //Interface.ensureImplements(car, Car);
+        return car;
+    };
+
+
+
+
+
+
+    //上汽
+    var SHfactory = function (){};
+    extend(SHfactory, factory);
+    //形式同北汽
+    SHfactory.prototype.createCar = function (brand) {alert(2)
+        var car;
+        switch (brand) {
+            case 'bmw':
+                car = new Bmw();
+                break;
+            case 'benz':
+                car = new Benz('上海');
+                break;
+            case 'audi':
+                car = new Audi('上海');
+                break;
+            default:
+                car = new Bmw();
+        }
+        //Interface.ensureImplements(car, Car);
+        return car;
+    };
+
+    var mycar1 = new BJfactory();
+    mycar1.sellcar('benz');
+    var mycar2 = new SHfactory();
+    mycar2.sellcar('audi');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>
