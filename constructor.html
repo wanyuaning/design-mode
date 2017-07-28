@@ -1,0 +1,46 @@
+<meta charset="utf-8">
+
+
+
+
+<script>
+
+    /**
+     * 设计模式之构造函数模式(Constructor Pattern)
+     *
+     * @constructor
+     */
+
+
+
+    var A = function () {
+        if(!(this instanceof A)) return new A;
+        this.a = '';
+        this.fn = function (c) {
+            console.log(c + '实例方法执行');
+        }
+    };
+
+    var a = A();
+        a.fn('a');
+
+    var b = A();
+        b.fn('b')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
