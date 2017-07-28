@@ -1,0 +1,56 @@
+<meta charset="utf-8">
+
+
+
+
+<script>
+
+    /**
+     * 设计模式之中介者模式(Mediator Pattern)
+     *
+     * 作用就是解除对象与对象之间的紧耦合关系
+     */
+
+    var Feiji = function (name) {
+        this.name = name;
+    };
+    Feiji.prototype.send = function (msg, to) {
+        console.log(this.name + '发送了信息');
+        tatai.send(msg, to);
+    };
+    Feiji.prototype.jieshou = function (msg) {
+        console.log(this.name + '接收到信息：' + msg)
+    };
+
+    var tatai = {
+        all: {},
+        zhuce: function (f) {
+            this.all[f.name] = f;
+        },
+        send: function (msg, to) {
+            this.all[to].jieshou(msg);
+        }
+    };
+
+    var feiji1 = new Feiji('feiji1');
+    var feiji2 = new Feiji('feiji2');
+    tatai.zhuce(feiji1);
+    tatai.zhuce(feiji2);
+    feiji1.send('我还有10分钟要降落', 'feiji2');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
