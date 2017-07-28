@@ -1,0 +1,77 @@
+<meta charset="utf-8">
+
+
+
+
+<script>
+
+    /**
+     * 设计模式之建造者模式(Builder Pattern)
+     *
+     * 将一个复杂的对象的构建与其表示相分离
+     * 结构：
+     *     B指挥者（构建-稳定的算法）
+     *     C建造者（表示-经常变化）
+     *     客户A（使用指挥者调用具体建造者工作得出A）
+     * 流程
+     *     C(需求) > B
+     * @constructor
+     */
+
+
+    // A.产出的项目
+    // B.调用A进行执行 而且B很清楚A具体的某一个大项
+    // B.只是一个接口而已 他不干活 他只对外说我能做项目
+    // C.是执行者 可以执行很多细节
+    var A = function () {
+        this.a = '';
+        this.b = '';
+        this.c = '';
+    };
+
+    var B = function () {
+        this.create = function (a, c) {
+            c.a();
+            c.b();
+            c.b();
+        }
+    };
+
+    var C = function () {
+        this.a = function () { };
+        this.b = function () { };
+        this.c = function () { };
+        this.result = function () {
+            A.a = 'ok';
+            A.a = 'ok';
+            A.a = 'ok';
+            return A;
+        }
+    };
+
+
+    var c = new C();
+    var b = new B(c);
+        b.create(c);
+    var a = c.result();
+        console.log(a);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
