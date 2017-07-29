@@ -1,0 +1,46 @@
+<meta charset="utf-8">
+
+
+
+
+<script>
+
+    /**
+     * 设计模式之装饰者模式(Decorator Pattern)
+     *
+     * 提供比继承更有弹性的替代方案
+     * AOP(面向切面编程)是一种装饰模式
+     */
+
+    var A = function () { };
+    A.prototype.fn = function () { console.log('A的方法fn') };
+
+
+    //装饰类
+    var B = function (a) { this.a = a };
+    B.prototype.fn = function () {
+        this.a.fn();
+        console.log('B对A的fn方法装饰');
+    };
+
+
+    var c = new A();
+    c = new B(c);
+    c.fn();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
