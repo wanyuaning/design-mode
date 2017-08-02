@@ -1,0 +1,136 @@
+<meta charset="utf-8">
+
+
+<script>
+
+    /**
+     * 设计模式之享元模式(Flyweight Pattern)
+     *
+     * 运行共享技术有效地支持大量细粒度的对象，避免大量拥有相同内容的小类的开销(如耗费内存)，使大家共享一个类(元类)
+     */
+
+
+    /*享元模式优化代码*/
+    var Book = function(title, author, genre, pageCount, publisherID, ISBN){
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.pageCount = pageCount;
+        this.publisherID = publisherID;
+        this.ISBN = ISBN;
+    };
+
+    // Book工厂 单例
+    // 定义一个基本工厂，用来检查之前是否创建该book的对象，如果有就返回，没有就重新创建并存储以便后面可以继续访问，这确保我们为每一种书只创建一个对象
+    var BookFactory = (function(){
+        var existingBooks = {};
+        return{
+            createBook: function(title, author, genre,pageCount,publisherID,ISBN){
+                /*查找之前是否创建*/
+                var existingBook = existingBooks[ISBN];
+                if(existingBook){
+                    return existingBook;
+                }else{
+                    /* 如果没有，就创建一个，然后保存*/
+                    var book = new Book(title, author, genre,pageCount,publisherID,ISBN);
+                    existingBooks[ISBN] =  book;
+                    return book;
+                }
+            }
+        }
+    });
+
+    // BookRecordManager 借书管理类 单例
+    // 外部状态，相对就简单了，除了我们封装好的book，其它都需要在这里管理
+    var BookRecordManager = (function(){
+        var bookRecordDatabase = {};
+        return{
+            /*添加借书记录*/
+            addBookRecord: function(id, title, author, genre,pageCount,publisherID,ISBN, checkoutDate, checkoutMember, dueReturnDate, availability){
+                var book = bookFactory.createBook(title, author, genre,pageCount,publisherID,ISBN);
+                bookRecordDatabase[id] ={
+                    checkoutMember: checkoutMember,
+                    checkoutDate: checkoutDate,
+                    dueReturnDate: dueReturnDate,
+                    availability: availability,
+                    book: book
+                };
+            },
+            updateCheckoutStatus: function(bookID, newStatus, checkoutDate, checkoutMember,     newReturnDate){
+                var record = bookRecordDatabase[bookID];
+                record.availability = newStatus;
+                record.checkoutDate = checkoutDate;
+                record.checkoutMember = checkoutMember;
+                record.dueReturnDate = newReturnDate;
+            },
+            extendCheckoutPeriod: function(bookID, newReturnDate){
+                bookRecordDatabase[bookID].dueReturnDate = newReturnDate;
+            },
+            isPastDue: function(bookID){
+                var currentDate = new Date();
+                return currentDate.getTime() > Date.parse(bookRecordDatabase[bookID].dueReturnDate);
+            }
+        };
+    });
+
+
+    var javascript = new Book('Javascrip设计模式', 'wanyuaning', 'web', 100, '10000', '123456');
+    console.log(javascript);
+
+
+
+
+    /*var Book = function( id, title, author, genre, pageCount,publisherID, ISBN, checkoutDate, checkoutMember, dueReturnDate,availability ){
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.pageCount = pageCount;
+        this.publisherID = publisherID;
+        this.ISBN = ISBN;
+        this.checkoutDate = checkoutDate;
+        this.checkoutMember = checkoutMember;
+        this.dueReturnDate = dueReturnDate;
+        this.availability = availability;
+    };
+    Book.prototype = {
+        getTitle:function(){
+            return this.title;
+        },
+        getAuthor: function(){
+            return this.author;
+        },
+        getISBN: function(){
+            return this.ISBN;
+        },
+        /!*其它get方法在这里就不显示了*!/
+
+        // 更新借出状态
+        updateCheckoutStatus: function(bookID, newStatus, checkoutDate,checkoutMember, newReturnDate){
+            this.id  = bookID;
+            this.availability = newStatus;
+            this.checkoutDate = checkoutDate;
+            this.checkoutMember = checkoutMember;
+            this.dueReturnDate = newReturnDate;
+        },
+        //续借
+        extendCheckoutPeriod: function(bookID, newReturnDate){
+            this.id =  bookID;
+            this.dueReturnDate = newReturnDate;
+        },
+        //是否到期
+        isPastDue: function(bookID){
+            var currentDate = new Date();
+            return currentDate.getTime() > Date.parse(this.dueReturnDate);
+        }
+    };*/
+
+
+
+
+
+
+
+</script>
+
+
