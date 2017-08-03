@@ -1,0 +1,48 @@
+<meta charset="utf-8">
+
+
+<script>
+
+
+    /**
+     * --------------------------------
+     * 设计模式之状态模式(State Pattern)
+     * --------------------------------
+     *
+     * 角色组成：
+     *（1）环境类：拥有一个状态成员，可以修改其状态并作出相应反应。
+     *（2）状态类：表示一种状态，包含其相应的处理方法
+     */
+
+
+    var trafficLight = (function () {
+        var currentLight = null;
+        return {
+            change: function (light) { currentLight = light; currentLight.go() }
+        }
+    })();
+
+    function RedLight() { }
+    RedLight.prototype.go = function () { console.log("this is red light") };
+    function GreenLight() { }
+    GreenLight.prototype.go = function () { console.log("this is green light") };
+    function YellowLight() { }
+    YellowLight.prototype.go = function () { console.log("this is yellow light") };
+
+    trafficLight.change(new RedLight());
+    trafficLight.change(new YellowLight());
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>

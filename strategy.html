@@ -20,6 +20,58 @@
 </div>
 
 <script>
+    /**
+     * --------------------------------
+     * 设计模式之策略模式(Strategy Pattern)
+     * --------------------------------
+     * 策略模式定义了算法组，分别封装起来，让他们之间可以互相替换，此模式让算法的变化独立于使用算法的客户
+     *
+     * 公式：内容组（参数）= 策略组【参数】
+     *
+     * 使用场景：要达到某一个目的，根据具体的实际情况，选择合适的方法。适合于实现某一个功能有多种方案可以选择的情景。
+     *
+     * 应用：
+     *      1 一个按不同等级计算年终奖的例子
+     *      2 数学运算示例
+     *      3 运动矢量集
+     */
+
+    // 策略组
+    var strategies = {
+            "S": function (salary) { return salary * 4 },
+            "A": function (salary) { return salary * 3 },
+            "B": function (salary) { return salary * 2 }
+        };
+    // 内容组
+    var calculateBonus = function (level, salary) { return strategies[level](salary) };
+    // 执行
+    console.log(calculateBonus('S', 20000)); // 输出：80000
+    console.log(calculateBonus('A', 10000)); // 输出：30000
+
+
+    var strategiesMath = {
+        'add': function (a, b) { return a + b },
+        'subtract': function (a, b) { return a - b },
+        'multiply': function (a, b) { return a * b },
+        'divide': function (a, b) { return a / b }
+    };
+    var math = function (type, a, b) { return strategiesMath[type](a, b) }
+    console.log(math('add', 5, 5)); // 输出：10
+    console.log(math('subtract', 5, 5)); // 输出：0
+    console.log(math('multiply', 5, 5)); // 输出：25
+    console.log(math('divide', 5, 5)); // 输出：1
+
+
+
+
+
+
+
+
+
+</script>
+
+<script>
     /*
      * 缓动算法: 接收4个参数，分别表示： 动画已消失的时间， 小球原始位置， 小球目标位置， 动画持续的总时间
      */
